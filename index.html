@@ -1,136 +1,329 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <link rel="stylesheet" media="all" href="style.css" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutoriales SOM</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; background-color: #f4f4f4; }
-        h1 { color: rgb(0, 0, 0); }
-        .container { background: white; padding: 20px; border-radius: 80px; box-shadow: 0 0 15px rgba(0,0,0,0.4); }
-        p { background: #ddccbb; padding: 10px; border-radius: 5px; font-size: 14px; }
-        .section { display: none; margin-top: 20px; }
-        
-        button { margin: 5px; padding: 12px 20px; border: none; background: linear-gradient(145deg, #998877, #776655); color: white; border-radius: 5px; cursor: pointer; font-size: 16px; position: relative;transition: background-color 0.3s ease, transform 0.2s ease; }
-        
-        button::after { content: ''; position: absolute; top: 50%; left: 50%; width: 0%; height: 0%; background: rgba(255, 255, 255, 0.1); border-radius: 50%; transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease; transform: translate(-50%, -50%); }
-        button:hover { background: linear-gradient(145deg, #BBAA99, #998877); transform: scale(1.05); }
-        button:active {transform: scale(0.98); }
-        button:hover::after {width: 100%; height: 100%; top: 50%; left: 50%;}
-    </style>
-    <script>
-        function mostrarSeccion(id) {
-            document.querySelectorAll('#GesUsu .section').forEach(section => section.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-        }
-        function mostrarSeccion2(id) {
-            document.querySelectorAll('#ComCar .section').forEach(section => section.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-        }
-        function mostrarTema(id) {
-            document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-        }
-    </script>
-</head>
-<body>
-    <audio autoplay loop>
-        <source src="b.mp3" type="audio/mp3">
-    </audio>
-    <h1 style="font-size: 60px; color: white; background-color: dimgray">Tutoriales SOM</h1>
-    <h1></h1>
-    <div class="container">
-        <button style="font-size: 30px;" onclick="mostrarTema('GesUsu')">Gestion de usuarios</button>
-        <button style="font-size: 30px;" onclick="mostrarTema('ComCar')">Compartir carpetas</button>
-        <button style="font-size: 30px;" onclick="mostrarTema('basicopostinstalacion')">Postinstalación básica</button>
+    <head>
+        <link rel="stylesheet" media="all" href="style.css" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tutoriales SOM</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                padding: 20px;
+                background-color: #f4f4f4;
+            }
+            h1 {
+                color: rgb(0, 0, 0);
+            }
+            .container {
+                background: white;
+                padding: 20px;
+                border-radius: 80px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            }
+            p {
+                background: #ddccbb;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 14px;
+            }
+            .section {
+                display: none;
+                margin-top: 20px;
+            }
 
-        <div id="basicopostinstalacion" class="section">
+            button {
+                margin: 5px;
+                padding: 12px 20px;
+                border: none;
+                background: linear-gradient(145deg, #998877, #776655);
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                position: relative;
+                transition:
+                    background-color 0.3s ease,
+                    transform 0.2s ease;
+            }
+
+            button::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0%;
+                height: 0%;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                transition:
+                    width 0.3s ease,
+                    height 0.3s ease,
+                    top 0.3s ease,
+                    left 0.3s ease;
+                transform: translate(-50%, -50%);
+            }
+            button:hover {
+                background: linear-gradient(145deg, #bbaa99, #998877);
+                transform: scale(1.05);
+            }
+            button:active {
+                transform: scale(0.98);
+            }
+            button:hover::after {
+                width: 100%;
+                height: 100%;
+                top: 50%;
+                left: 50%;
+            }
+        </style>
+        <script>
+            function mostrarSeccion(id) {
+                document.querySelectorAll("#GesUsu .section").forEach((section) => (section.style.display = "none"));
+                document.getElementById(id).style.display = "block";
+            }
+            function mostrarSeccion2(id) {
+                document.querySelectorAll("#ComCar .section").forEach((section) => (section.style.display = "none"));
+                document.getElementById(id).style.display = "block";
+            }
+            function mostrarTema(id) {
+                document.querySelectorAll(".section").forEach((section) => (section.style.display = "none"));
+                document.getElementById(id).style.display = "block";
+            }
+            // Diccionario de usuarios vÃ¡lidos
+            const users = {
+                admin: "1234",
+                profesor: "abcd",
+                alumno: "alumno123"
+            };
+
+            function login() {
+                const user = document.getElementById("username").value.trim();
+                const pass = document.getElementById("password").value.trim();
+
+                // Tomar usuarios de localStorage, si no existe usar tu objeto por defecto
+                let users = JSON.parse(localStorage.getItem("users") || "{}");
+                // AÃ±adir tus usuarios por defecto al objeto 'users'
+                users = { admin: "1234", profesor: "abcd", alumno: "alumno123", ...users };
+
+                if (users[user] && users[user] === pass) {
+                    document.getElementById("login-container").style.display = "none";
+                    document.getElementById("main-content").style.display = "block";
+                    document.getElementById("login-error").style.display = "none";
+                } else {
+                    document.getElementById("login-error").style.display = "block";
+                }
+            }
+            function recuperarContraseÃ±a() {
+                // Oculta completamente el formulario de login
+                document.getElementById("login-container").style.display = "none";
+
+                // Muestra el formulario de recuperaciÃ³n
+                document.getElementById("recuperar-container").style.display = "block";
+
+                // Limpia mensajes anteriores
+                document.getElementById("mensaje-recuperacion").textContent = "";
+                document.getElementById("usuario-recuperacion").value = "";
+            }
+            function mostrarContrasena() {
+                const usuario = document.getElementById("usuario-recuperacion").value;
+
+                if (usuario in users) {
+                    document.getElementById("mensaje-recuperacion").textContent = "Tu contraseÃ±a es: " + users[usuario];
+                } else {
+                    document.getElementById("mensaje-recuperacion").textContent = "Usuario no encontrado.";
+                }
+            }
+            function mostrarRegistro() {
+                document.getElementById("login-container").style.display = "none";
+                document.getElementById("register-container").style.display = "block";
+                document.getElementById("register-msg").textContent = "";
+            }
+            function register() {
+                const newUser = document.getElementById("new-username").value.trim();
+                const newPass = document.getElementById("new-password").value.trim();
+
+                if (newUser && newPass) {
+                    // Recuperamos usuarios guardados en localStorage
+                    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+                    if (users[newUser]) {
+                        document.getElementById("register-msg").style.color = "red";
+                        document.getElementById("register-msg").textContent = "El usuario ya existe.";
+                    } else {
+                        users[newUser] = newPass;
+                        localStorage.setItem("users", JSON.stringify(users));
+                        document.getElementById("register-msg").style.color = "green";
+                        document.getElementById("register-msg").textContent =
+                            "Usuario registrado correctamente. Ahora inicia sesiÃ³n.";
+
+                        // Volver a login despuÃ©s de unos segundos
+                        setTimeout(() => {
+                            document.getElementById("register-container").style.display = "none";
+                            document.getElementById("login-container").style.display = "block";
+                        }, 2000);
+                    }
+                } else {
+                    document.getElementById("register-msg").style.color = "red";
+                    document.getElementById("register-msg").textContent = "Por favor, llena ambos campos.";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="login-container" class="container">
+            <h2>Iniciar SesiÃ³n</h2>
+            <input type="text" id="username" placeholder="Usuario" />
+            <input type="password" id="password" placeholder="ContraseÃ±a" />
+            <button onclick="login()">Entrar</button>
+            <p id="login-error" style="display: none">Usuario o contraseÃ±a incorrectos.</p>
+            <p style="background-color: white"></p>
+            <button onclick="recuperarContraseÃ±a()">Â¿Olvidaste tu contraseÃ±a?</button>
+            <button onclick="mostrarRegistro()">Â¿No tienes cuenta? RegÃ­strate</button>
+        </div>
+        <div id="register-container" class="container" style="display: none">
+            <h2>Registrar nuevo usuario</h2>
+            <input type="text" id="new-username" placeholder="Nuevo usuario" />
+            <input type="password" id="new-password" placeholder="Nueva contraseÃ±a" />
+            <button onclick="register()">Registrar</button>
+            <p id="register-msg" style="color: green"></p>
+        </div>
+        <div id="recuperar-container" style="display: none; margin-top: 15px" class="container">
+            <h2 for="usuario-recuperacion">Ingresa tu nombre de usuario:</h2>
+            <br />
+            <input type="text" id="usuario-recuperacion" placeholder="Usuario" />
+            <button onclick="mostrarContrasena()">Recuperar</button>
+            <p id="mensaje-recuperacion"></p>
+        </div>
+        <div id="main-content" class="container" style="display: none">
+            <h1 style="font-size: 60px; color: white; background-color: dimgray">Tutoriales SOM</h1>
+            <h1></h1>
             <div class="container">
-                <h1>Postinstalación básica en Linux</h1>
-                <iframe src="TBPIL.pdf" width="100%" height="1000px" title="Presentación sobre compartir carpetas"></iframe>
+                <button style="font-size: 30px" onclick="mostrarTema('GesUsu')">GestiÃ³n de usuarios</button>
+                <button style="font-size: 30px" onclick="mostrarTema('ComCar')">Compartir carpetas</button>
+                <button style="font-size: 30px" onclick="mostrarTema('basicopostinstalacion')">
+                    PostinstalaciÃ³n bÃ¡sica
+                </button>
+
+                <div id="basicopostinstalacion" class="section">
+                    <div class="container">
+                        <h1>PostinstalaciÃ³n bÃ¡sica en Linux</h1>
+                        <iframe
+                            src="TBPIL.pdf"
+                            width="100%"
+                            height="1000px"
+                            title="PresentaciÃ³n sobre compartir carpetas"></iframe>
+                    </div>
+                </div>
+
+                <div id="ComCar" class="section">
+                    <div class="container">
+                        <h1>Compartir carpetas en Linux</h1>
+                        <iframe
+                            src="CCCR.pdf"
+                            width="100%"
+                            height="1000px"
+                            title="PresentaciÃ³n sobre compartir carpetas"></iframe>
+                    </div>
+                </div>
+                <div id="GesUsu" class="section">
+                    <div class="container">
+                        <h1>GestiÃ³n de usuarios en Linux</h1>
+                        <h2>Selecciona un tema:</h2>
+                        <button onclick="mostrarSeccion('introducciÃ³n')">IntroducciÃ³n</button>
+                        <button onclick="mostrarSeccion('crear')">Crear Usuario</button>
+                        <button onclick="mostrarSeccion('modificar')">Modificar Usuario</button>
+                        <button onclick="mostrarSeccion('eliminar')">Eliminar Usuario</button>
+                        <button onclick="mostrarSeccion('listar')">Listar Usuarios</button>
+                        <button onclick="mostrarSeccion('permisos')">Modificar Permisos</button>
+
+                        <div id="introducciÃ³n" class="section">
+                            <h2>IntroducciÃ³n</h2>
+                            <h3>Â¿QuÃ© es un usuario?</h3>
+                            <p>
+                                Un usuario es una entidad (persona o proceso) que interactÃºa con un sistema,
+                                generalmente a travÃ©s de una cuenta con un identificador Ãºnico. Los usuarios tienen
+                                permisos especÃ­ficos que determinan quÃ© acciones pueden realizar dentro del sistema,
+                                como acceder a archivos o ejecutar programas.
+                            </p>
+                            <h3>Â¿Diferencias entre usuarios normales y root?</h3>
+                            <p>
+                                En sistemas operativos como Linux, los usuarios normales tienen privilegios limitados,
+                                lo que significa que no pueden realizar tareas administrativas como instalar software o
+                                modificar configuraciones crÃ­ticas del sistema. Por otro lado, el usuario 'root' tiene
+                                privilegios de superusuario, permitiÃ©ndole realizar cualquier acciÃ³n en el sistema, lo
+                                que lo convierte en un usuario con acceso total a todos los recursos del sistema.
+                            </p>
+                            <h3>Importancia de la gestiÃ³n de usuarios</h3>
+                            <p>
+                                La gestiÃ³n de usuarios es fundamental para mantener la seguridad y el control de un
+                                sistema. A travÃ©s de una adecuada gestiÃ³n de cuentas, se pueden asignar permisos
+                                especÃ­ficos a los usuarios, controlar el acceso a recursos y evitar que personas no
+                                autorizadas realicen acciones que puedan poner en peligro la integridad del sistema.
+                                Esto tambiÃ©n es esencial para la administraciÃ³n de sistemas multicanal, donde se deben
+                                manejar distintos niveles de acceso para cada usuario o grupo.
+                            </p>
+                        </div>
+
+                        <div id="crear" class="section">
+                            <h2>Crear un usuario</h2>
+                            <h3>Para aÃ±adir un nuevo usuario al sistema:</h3>
+                            <p>sudo useradd -m nombre_usuario</p>
+                            <h3>Para establecer la contraseÃ±a del usuario:</h3>
+                            <p>sudo passwd nombre_usuario</p>
+                        </div>
+
+                        <div id="modificar" class="section">
+                            <h2>Modificar un usuario</h2>
+                            <h3>Saber en quÃ© usuario estÃ¡s conectado</h3>
+                            <p>whoami</p>
+                            <h3>Saber quÃ© usuarios estÃ¡n conectados al equipo</h3>
+                            <p>who</p>
+                            <h3>Para conocer el ID del usuario al que estÃ¡s conectado</h3>
+                            <p>id -u</p>
+                            <h3>Para cambiar el nombre de usuario:</h3>
+                            <p>sudo usermod -l nuevo_nombre antiguo_nombre</p>
+                            <h3>Para agregar un usuario a un grupo:</h3>
+                            <p>sudo usermod -aG grupo nombre_usuario</p>
+                            <h3>Para cambiar la contraseÃ±a de un usuario</h3>
+                            <p>sudo passwd nombre_usuario</p>
+                        </div>
+
+                        <div id="eliminar" class="section">
+                            <h2>Eliminar un usuario</h2>
+                            <h3>Para eliminar un usuario sin eliminar su directorio personal:</h3>
+                            <p>sudo userdel nombre_usuario</p>
+                            <h3>Para eliminar un usuario y su directorio personal:</h3>
+                            <p>sudo userdel -r nombre_usuario</p>
+                        </div>
+
+                        <div id="listar" class="section">
+                            <h2>Listar usuarios</h2>
+                            <h3>Para ver la lista de usuarios en el sistema:</h3>
+                            <p>cat /etc/passwd</p>
+                        </div>
+
+                        <div id="permisos" class="section">
+                            <h2>Modificar Permisos de un Archivo</h2>
+                            <h3>
+                                Para otorgar permisos especÃ­ficos a un usuario sin cambiar la propiedad del archivo, usa
+                                ACLs:
+                            </h3>
+                            <p>sudo setfacl -m u:usuario:rwx archivo</p>
+                            <h3>Para ver los permisos ACL de un archivo:</h3>
+                            <p>getfacl archivo</p>
+                            <h3>Para revocar los permisos de un usuario especÃ­fico:</h3>
+                            <p>sudo setfacl -x u:usuario archivo</p>
+                            <h3>ExplicaciÃ³n:</h3>
+                            <p>
+                                -m u:usuario:rwx: Asigna permisos de lectura, escritura y ejecuciÃ³n a un usuario
+                                especÃ­fico. getfacl archivo: Muestra los permisos ACL actuales del archivo. -x
+                                u:usuario: Elimina los permisos ACL de ese usuario en el archivo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div id="ComCar" class="section">
-            <div class="container">
-                <h1>Compartir carpetas en Linux</h1>
-                <iframe src="CCCR.pdf" width="100%" height="1000px" title="Presentación sobre compartir carpetas"></iframe>
-            </div>
-        </div>
-        <div id="GesUsu" class="section">
-            <div class="container">
-                <h1>Gestión de usuarios en Linux</h1>
-                <h2>Selecciona un tema:</h2>
-                <button onclick="mostrarSeccion('introducción')">Introducción</button>
-                <button onclick="mostrarSeccion('crear')">Crear Usuario</button>
-                <button onclick="mostrarSeccion('modificar')">Modificar Usuario</button>
-                <button onclick="mostrarSeccion('eliminar')">Eliminar Usuario</button>
-                <button onclick="mostrarSeccion('listar')">Listar Usuarios</button>
-                <button onclick="mostrarSeccion('permisos')">Modificar Permisos</button>
-
-                <div id="introducción" class="section">
-                    <h2>Introducción</h2>
-                    <h3>¿Qué es un usuario?</h3>
-                    <p>un usuario es una entidad (persona o proceso) que interactúa con un sistema, generalmente a través de una cuenta con un identificador único. Los usuarios tienen permisos específicos que determinan qué acciones pueden realizar dentro del sistema, como acceder a archivos o ejecutar programas.</p>
-                    <h3>¿Diferencias entre usuarios normales y root?</h3>
-                    <p>En sistemas operativos como Linux, los usuarios normales tienen privilegios limitados, lo que significa que no pueden realizar tareas administrativas como instalar software o modificar configuraciones críticas del sistema. Por otro lado, el usuario 'root' tiene privilegios de superusuario, permitiéndole realizar cualquier acción en el sistema, lo que lo convierte en un usuario con acceso total a todos los recursos del sistema.</p>
-                    <h3>Importancia de la gestión de usuarios</h3>
-                    <p>La gestión de usuarios es fundamental para mantener la seguridad y el control de un sistema. A través de una adecuada gestión de cuentas, se pueden asignar permisos específicos a los usuarios, controlar el acceso a recursos y evitar que personas no autorizadas realicen acciones que puedan poner en peligro la integridad del sistema. Esto también es esencial para la administración de sistemas multicanal, donde se deben manejar distintos niveles de acceso para cada usuario o grupo.</p>
-                </div>
-
-                <div id="crear" class="section">
-                    <h2>Crear un usuario</h2>
-                    <h3>Para añadir un nuevo usuario al sistema:</h3>
-                    <p>sudo useradd -m nombre_usuario</p>
-                    <h3>Para establecer la contraseña del usuario:</h3>
-                    <p>sudo passwd nombre_usuario</p>
-                </div>
-
-                <div id="modificar" class="section">
-                    <h2>Modificar un usuario</h2>
-                    <h3>Saber en que usuario estás conectado</h3>
-                    <p>whoami</p>
-                    <h3>Saber que usuarios estan conectados al equipo</h3>
-                    <p>who</p>
-                    <h3>Para conocer el ID del usuario al que estas conectado</h3>
-                    <p>id -u</p>
-                    <h3>Para cambiar el nombre de usuario:</h3>
-                    <p>sudo usermod -l nuevo_nombre antiguo_nombre</p>
-                    <h3>Para agregar un usuario a un grupo:</h3>
-                    <p>sudo usermod -aG grupo nombre_usuario</p>
-                    <h3>Para cambiar la contraseña de un usuario</h3>
-                    <p>sudo passwd nombre_usuario</p>
-                </div>
-
-                <div id="eliminar" class="section">
-                    <h2>Eliminar un usuario</h2>
-                    <h3>Para eliminar un usuario sin eliminar su directorio personal:</h3>
-                    <p>sudo userdel nombre_usuario</p>
-                    <h3>Para eliminar un usuario y su directorio personal:</h3>
-                    <p>sudo userdel -r nombre_usuario</p>
-                </div>
-
-                <div id="listar" class="section">
-                    <h2>Listar usuarios</h2>
-                    <h3>Para ver la lista de usuarios en el sistema:</h3>
-                    <p>cat /etc/passwd</p>
-                </div>
-
-                <div id="permisos" class="section">
-                    <h2>Modificar Permisos de un Archivo</h2>
-                    <h3>Para otorgar permisos específicos a un usuario sin cambiar la propiedad del archivo, usa ACLs:</h3>
-                    <p>sudo setfacl -m u:usuario:rwx archivo</p>
-                    <h3>Para ver los permisos ACL de un archivo:</h3>
-                    <p>getfacl archivo</p>
-                    <h3>Para revocar los permisos de un usuario específico:</h3>
-                    <p>sudo setfacl -x u:usuario archivo</p>
-                    <h3>Explicación:</h3>
-                    <p>-m u:usuario:rwx: Asigna permisos de lectura, escritura y ejecución a un usuario específico.getfacl archivo: Muestra los permisos ACL actuales del archivo.
-                        -x u:usuario: Elimina los permisos ACL de ese usuario en el archivo.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+    </body>
 </html>
